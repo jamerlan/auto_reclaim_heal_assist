@@ -14,7 +14,7 @@ function widget:GetInfo()
 		author = "Pithikos",
 		date = "Nov 21, 2010",
 		license = "GPLv3",
-        version = 2,
+        version = 3,
 		layer = 0,
 		enabled = true --enable automatically
 	}
@@ -25,6 +25,7 @@ end
 
 --Changelog
 -- v2 [teh]decay - added commander and spy to ignore units (do you like when spy uncloacks? or commander walks on llt?)
+-- v3 [teh]decay - fix bug with factories pointing to itself: http://springrts.com/phpbb/viewtopic.php?f=44&t=28511
 
 
 
@@ -133,7 +134,7 @@ function widget:UnitIdle(unitID, unitDefID, unitTeam)
 	--check if unit is mine
 		local udef = Spring.GetUnitDefID(unitID)
 		local ud = UnitDefs[udef] 
-		if (UnitDefs[unitDefID]["canReclaim"] and IsSkirm(ud)==false ) then     --check if unit can reclaim
+		if (UnitDefs[unitDefID]["canReclaim"] and IsSkirm(ud)==false and ud.isFactory == false) then     --check if unit can reclaim
 			  idleReclaimers[unitID]=true                 --add unit to register
 			  lastRegiInSecs=gameInSecs
 			  --echo("Registering unit "..unitID.." as idle")
